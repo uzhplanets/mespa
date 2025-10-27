@@ -1,0 +1,64 @@
+! This is the first inlist file that MESA reads when it starts.
+
+! This file tells MESA to go look elsewhere for its configuration
+! info. This makes changing between different inlists easier, by
+! allowing you to easily change the name of the file that gets read.
+
+&star_job
+    create_initial_model = .true.
+    radius_in_cm_for_create_initial_model = 2d10
+    mass_in_gm_for_create_initial_model = 1.899d30  ! 1 M_jup
+    center_logP_1st_try_for_create_initial_model = 12d0
+    entropy_1st_try_for_create_initial_model = 10d0
+    max_tries_for_create_initial_model = 100
+    abs_e01_tolerance_for_create_initial_model = 1d-3
+    abs_e02_tolerance_for_create_initial_model = 1d-3
+    initial_model_eps = 0.05d0
+    set_initial_age = .true.
+    initial_age = 0e0
+    set_initial_cumulative_energy_error = .true.
+    new_cumulative_energy_error = 0d0
+
+    save_model_when_terminate = .true.
+    required_termination_code_string(:) = 'max_age'
+    save_model_filename = 'planet_create.mod'
+
+    write_profile_when_terminate = .true.
+    filename_for_profile_when_terminate = 'profile_create.data'
+
+    read_extra_star_job_inlist(1) = .true.
+    extra_star_job_inlist_name(1) = 'inlist_shared'
+/ ! end of star_job namelist
+
+
+&eos
+    read_extra_eos_inlist(1) = .true.
+    extra_eos_inlist_name(1) = 'inlist_shared'
+    eosDT_use_linear_interp_for_X = .true.
+/ ! end of eos namelist
+
+
+&kap
+    read_extra_kap_inlist(1) = .true.
+    extra_kap_inlist_name(1) = 'inlist_shared'
+/ ! end of kap namelist
+
+
+&controls
+    ! initial composition
+    initial_z = 0.100
+    initial_y = 0.224
+    ! stopping
+    max_age = 1d3
+    ! output
+    profile_data_prefix = 'profile_create'
+    star_history_name = 'history_create.data'
+    read_extra_controls_inlist(1) = .true.
+    extra_controls_inlist_name(1) = 'inlist_shared'
+/ ! end of controls namelist
+
+
+&pgstar
+    read_extra_pgstar_inlist(1) = .true.
+    extra_pgstar_inlist_name(1) = 'inlist_pgstar'
+/ ! end of pgstar namelist

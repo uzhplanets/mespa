@@ -1,0 +1,56 @@
+&star_job
+   pgstar_flag = .true.
+/ ! end of star_job namelist
+
+
+&eos
+   use_other_eos_component = .true.
+   use_other_eos_results = .true.
+   eos_integer_ctrl(1) = 4 ! which tables to use
+   eos_integer_ctrl(2) = 2 ! between-table interpolation method
+   eos_integer_ctrl(3) = 2 ! in-table interpolation method
+/ ! end of eos namelist
+
+
+&kap
+   Zbase = 0.012d0
+   kap_file_prefix = 'gs98'
+   kap_lowT_prefix = 'lowT_Freedman11'
+/ ! end of kap namelist
+
+
+&controls
+   ! output
+   terminal_interval = 50
+   profile_interval = 50
+   profile_data_prefix = 'profile'
+   max_num_profile_models = 500
+   history_interval = 5
+
+   ! debug options
+   report_ierr = .true.
+
+   !>>> convection
+   MLT_option = 'Mihalas'
+   mixing_length_alpha = 0.1
+   mix_factor = 1
+
+   ! atmosphere
+   atm_option = 'irradiated_grey'
+   atm_irradiated_T_eq = 600 ! equilibrium temperature of the planet
+   atm_irradiated_kap_v_div_kap_th = 0 ! sets the ratio of the visible to thermal opacity (if atm_irradiated_kap_v > 0)
+   atm_irradiated_kap_v = 4d-3 ! sets visible opacity (if atm_irradiated_kap_v_div_kap_th <= 0)
+   atm_irradiated_P_surf = 1d4 ! set the pressure at the bottom of the atmosphere in barye
+   atm_irradiated_opacity = 'iterated' ! default is 'fixed'
+   atm_irradiated_errtol = 1d-7 ! only used if atm_irradiated_opacity = 'iterated'
+   atm_irradiated_max_iters = 50 ! only used if atm_irradiated_opacity = 'iterated'
+
+   ! accuracy and meshing
+   varcontrol_target = 1d-3
+   mesh_delta_coeff = 1d0
+   min_timestep_limit = 1d-8
+   max_years_for_timestep = 1d9
+   energy_eqn_option = 'dedt'
+   convergence_ignore_equL_residuals = .false.
+
+/ ! end of controls namelist

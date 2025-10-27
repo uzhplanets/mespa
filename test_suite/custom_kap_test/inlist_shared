@@ -1,0 +1,64 @@
+&star_job
+   pgstar_flag = .true.
+/ ! end of star_job namelist
+
+
+&eos
+   use_other_eos_component = .true.
+   use_other_eos_results = .true.
+
+   ! which eos to use:
+   eos_integer_ctrl(1) = 4
+   ! Options (if available on your system):
+   ! 1: scvh_extended_qeos_h2o 
+   ! 2: scvh_extended_qeos_mixture 
+   ! 3: cms_pt_int_qeos_h2o
+   ! 4: cms_pt_int_qeos_mixture
+   ! 5: extra_eos
+
+   ! Interpolation options
+   eos_integer_ctrl(2) = 2
+   eos_integer_ctrl(3) = 2
+   eosDT_use_linear_interp_for_X = .true.
+/ ! end of eos namelist
+
+
+&kap
+   Zbase = 0.012d0
+   kap_file_prefix = 'gs98'
+   kap_lowT_prefix = 'lowT_Freedman11'
+/ ! end of kap namelist
+
+
+&controls
+   ! output
+   terminal_interval = 50
+   profile_interval = 50
+   profile_data_prefix = 'profile'
+   max_num_profile_models = 500
+   history_interval = 1
+
+   ! debug options
+   report_ierr = .true.
+
+   ! convection
+   MLT_option = 'Mihalas'
+   mixing_length_alpha = 0.1
+   mix_factor = 1
+
+   ! atmosphere
+   atm_option = "T_tau"
+   atm_T_tau_relation = "Eddington"
+   atm_T_tau_opacity = "iterated"
+   column_depth_for_irradiation = 3d2
+   irradiation_flux = 1d5
+
+   ! accuracy and meshing
+   varcontrol_target = 1d-3
+   mesh_delta_coeff = 1d0
+   max_years_for_timestep = 1d9
+   energy_eqn_option = 'eps_grav'
+   convergence_ignore_equL_residuals = .false.
+   use_gold_tolerances = .true.
+
+/ ! end of controls namelist

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+SRC_DIR=$MESPA_DIR
+
+date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S"
+$SRC_DIR/planet
+date "+DATE: %Y-%m-%d%nTIME: %H:%M:%S"
