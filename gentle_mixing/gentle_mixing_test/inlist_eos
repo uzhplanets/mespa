@@ -1,0 +1,26 @@
+
+&eos
+
+   use_CMS =.false.
+   max_Z_for_any_CMS = 0.04d0
+   max_Z_for_all_CMS = 0.04d0
+   
+   logQ_max_for_any_CMS = 5.6d0
+   logQ_max_for_all_CMS = 5.5d0
+   logQ_min_for_any_CMS = -9.9d0
+   logQ_min_for_all_CMS = -10.d0
+
+   logRho_max_for_all_CMS = 10.1d0
+   logRho_max_for_any_CMS = 10.0d0
+   logRho_min_for_all_CMS = -18.0d0
+   logRho_min_for_any_CMS = -18.1d0
+
+   logT_max_for_all_CMS = 7.7d0
+   logT_max_for_any_CMS = 7.6d0
+   logT_min_for_all_CMS = 2.11d0
+   logT_min_for_any_CMS = 2.10d0
+   
+   logT_max_for_all_CMS_pure_He = 6
+   logT_max_for_any_CMS_pure_He = 2
+    
+/ ! end of eos namelist

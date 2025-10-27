@@ -1,0 +1,391 @@
+
+&star_job
+
+  pgstar_flag = .true.
+  disable_pgstar_during_relax_flag = .false.
+
+
+/ !end of star_job
+
+&pgstar
+
+	Profile_Panels3_file_flag = .false.
+	Profile_Panels1_file_flag = .false.
+
+  pgstar_interval = 1
+
+  pause = .false.
+  
+  ! TRho Profile window
+  ! ===================
+    TRho_Profile_win_flag = .false.
+
+    show_TRho_Profile_eos_regions = .true.
+    show_TRho_Profile_kap_regions = .false.
+
+  ! add legend explaining colors
+    show_TRho_Profile_legend = .true.
+
+  ! display numerical info about the star
+    show_TRho_Profile_text_info = .true.
+    
+
+  ! set window size (aspect_ratio = height/width)
+    TRho_Profile_win_width = 6
+    TRho_Profile_win_aspect_ratio = 0.75
+
+    TRho_Profile_xmin = -6
+    TRho_Profile_xmax = 1
+    TRho_Profile_ymin = 1.5
+    TRho_Profile_ymax = 5.3
+
+    TRho_Profile_file_flag = .false.
+    TRho_Profile_file_dir = 'png'
+    TRho_Profile_file_prefix = 'trho_profile_'
+    TRho_Profile_file_interval = 1
+    TRho_Profile_file_width = -1
+    TRho_Profile_file_aspect_ratio = -1
+
+    ! Mixing window
+    ! =============
+    Summary_Profile_win_flag = .true.
+    Summary_Profile_xaxis_name = 'mass_Jup'
+    Summary_Profile_num_lines = 3
+    
+    Summary_Profile_name(1) = 'x'
+    Summary_Profile_legend(1) = 'X'
+    Summary_Profile_scaled_value(1) = .false.
+
+    Summary_Profile_name(2) = 'y'
+    Summary_Profile_legend(2) = 'Y'
+    Summary_Profile_scaled_value(2) = .false.
+
+    Summary_Profile_name(3) = 'z'
+    Summary_Profile_legend(3) = 'Z'
+    Summary_Profile_scaled_value(3) = .false.
+
+    Summary_Profile_file_flag = .true.
+    Summary_Profile_file_dir = 'png'
+    Summary_Profile_file_prefix = 'Summary_Profile_'
+    Summary_Profile_file_interval = 25
+    Summary_Profile_file_width = 20
+
+  ! History Panels
+  ! ==============
+    History_Panels1_win_flag = .false.
+    History_Panels1_title = 'History_Panels'
+    History_Panels1_num_panels = 4
+
+    History_Panels1_win_width = 6
+    History_Panels1_win_aspect_ratio = 1.5
+    History_Panels1_txt_scale = 0.75
+
+    History_Panels1_xleft = 0.15
+    History_Panels1_xright = 0.85
+    History_Panels1_ybot = 0.10
+    History_Panels1_ytop = 0.92
+
+    History_Panels1_xaxis_name = 'star_age'
+    History_Panels1_xaxis_log = .true.
+    !History_Panels1_xmin = 1d0
+
+    History_Panels1_yaxis_name(1) = 'num_zones'
+    History_Panels1_other_yaxis_name(1) = 'log_dt'
+    History_Panels1_other_ymin(1) = -1
+    History_Panels1_other_ymax(1) = 7
+
+    History_Panels1_yaxis_name(2) = 'Teff'
+
+    History_Panels1_other_yaxis_name(2) = 'total_entropy'
+    ! History_Panels1_other_yaxis_log(2) = .true.
+    ! History_Panels1_other_ymin(2) = -6
+    ! History_Panels1_other_ymax(2) = -1
+
+    History_Panels1_yaxis_name(3) = 'kh_timescale'
+    ! History_Panels1_yaxis_log(3) = .true.
+    ! History_Panels1_ymin(3) = -1
+    ! History_Panels1_ymax(3) = 11
+
+    History_Panels1_other_yaxis_name(3) = 'radius_Jup'
+    ! History_Panels1_other_yaxis_log(3) = .true.
+    ! History_Panels1_other_ymin(3) = -11
+    ! History_Panels1_other_ymax(3) = 0.1
+
+    History_Panels1_yaxis_name(4) = 'NMOI'
+    ! History_Panels1_yaxis_log(3) = .true.
+    ! History_Panels1_ymin(3) = -1
+    ! History_Panels1_ymax(3) = 11
+
+    History_Panels1_other_yaxis_name(4) = 'Z_env'
+    ! History_Panels1_other_yaxis_log(4) = .true.
+    ! History_Panels1_other_ymin(4) = -6.5
+    ! History_Panels1_other_ymax(4) = 0.1
+
+    History_Panels1_file_flag = .false.
+    History_Panels1_file_dir = 'png'
+    History_Panels1_file_prefix = 'history_panels_'
+    History_Panels1_file_interval = 25
+    History_Panels1_file_width = -1
+    History_Panels1_file_aspect_ratio = -1
+
+  ! Profile Panels
+  ! ==============
+    Profile_Panels1_win_flag = .false.
+    Profile_Panels1_title = 'interior structure'
+    Profile_Panels1_win_width = 6 ! 12
+    Profile_Panels1_win_aspect_ratio = 1.25 !1.25
+    Profile_Panels1_xleft = 0.15
+    Profile_Panels1_txt_scale = 0.5
+    Profile_Panels1_xright = 0.84
+    Profile_Panels1_ybot = 0.075
+    Profile_Panels1_ytop = .93
+    Profile_Panels1_num_panels = 5
+    Profile_Panels1_show_mix_regions_on_xaxis = .true.
+
+    ! set axis quants
+    Profile_Panels1_xaxis_name = 'mass_Jup'
+    !Profile_Panels1_xmin = 2.5
+    !Profile_Panels1_xmax = 5
+
+    Profile_Panels1_yaxis_name(1) = 'logP'
+    Profile_Panels1_ymin(1) = 1
+    Profile_Panels1_ymax(1) = 15
+
+    !Profile_Panels1_yaxis_reversed = .true.
+
+    Profile_Panels1_other_yaxis_name(1) = 'logRho'
+    !Profile_Panels1_other_yaxis_reversed = .true.
+
+    Profile_Panels1_yaxis_name(2) = 'gradr'
+    Profile_Panels1_ymin(2) = -1
+    Profile_Panels1_ymax(2) = 6
+    Profile_Panels1_yaxis_log(2) = .true.
+
+    Profile_Panels1_other_yaxis_name(2) = 'gradL'
+    Profile_Panels1_other_yaxis_log(2) = .true.
+    Profile_Panels1_other_ymin(2) = -1
+    Profile_Panels1_other_ymax(2) = 6
+    
+    Profile_Panels1_yaxis_name(3) = 'logT'
+    Profile_Panels1_ymin(3) = 3
+    Profile_Panels1_ymax(3) = 5.5
+
+    Profile_Panels1_other_yaxis_name(3) = 'opacity'
+    Profile_Panels1_other_yaxis_log(3) = .true.
+    Profile_Panels1_other_ymin(3) = 0
+    Profile_Panels1_other_ymax(3) = 3
+
+    Profile_Panels1_yaxis_name(4) = 'lum_erg_s'
+    Profile_Panels1_yaxis_log(4) = .true.
+    Profile_Panels1_ymin(4) = 20
+    Profile_Panels1_ymax(4) = 34
+
+    Profile_Panels1_other_yaxis_name(4) = 'dS_dt'
+    Profile_Panels1_other_yaxis_log(4) = .true.
+    Profile_Panels1_other_ymin(4) = -9
+    Profile_Panels1_other_ymax(4) = -4.5
+
+    Profile_Panels1_yaxis_name(5) = 'entropy'
+    Profile_Panels1_yaxis_log(5) = .false.
+    Profile_Panels1_ymin(5) = 0
+    Profile_Panels1_ymax(5) = 12
+    
+    Profile_Panels1_other_yaxis_name(5) ='Z'
+    Profile_Panels1_other_ymin(5) = 0
+    Profile_Panels1_other_ymax(5) = 1
+
+
+    ! Profile Panels
+  ! ==============
+    Profile_Panels2_win_flag = .false.
+    Profile_Panels2_title = 'interior structure'
+    Profile_Panels2_win_width = 6 ! 12
+    Profile_Panels2_win_aspect_ratio = 1.25 !1.25
+    Profile_Panels2_xleft = 0.15
+    Profile_Panels2_txt_scale = 0.5
+    Profile_Panels2_xright = 0.84
+    Profile_Panels2_ybot = 0.075
+    Profile_Panels2_ytop = .93
+    Profile_Panels2_num_panels = 5
+    Profile_Panels2_show_mix_regions_on_xaxis = .true.
+
+    ! set axis quants
+    Profile_Panels2_xaxis_name = 'mass_Jup'
+    Profile_Panels2_xaxis_reversed = .false.
+    !Profile_Panels1_xmin = 2.5
+    !Profile_Panels1_xmax = 5
+
+    Profile_Panels2_yaxis_name(1) = 'cp'
+    Profile_Panels2_ymin(1) = 0
+    Profile_Panels2_ymax(1) = 5d8
+    Profile_Panels2_other_yaxis_name(1) = 'cv'
+    Profile_Panels2_other_ymin(1) = 0
+    Profile_Panels2_other_ymax(1) = 5d8
+
+    Profile_Panels2_yaxis_name(2) = 'eps_grav'
+    ! Profile_Panels2_ymin(2) = 0.8
+    ! Profile_Panels2_ymax(2) = 1.6
+
+    Profile_Panels2_other_yaxis_name(2) = 'chiRho'
+    ! Profile_Panels2_other_ymin(2) = 0.8
+    ! Profile_Panels2_other_ymax(2) = 1.6
+
+    Profile_Panels2_yaxis_name(3) = 'lum_rad'
+    Profile_Panels2_yaxis_log(3) = .true.
+    Profile_Panels2_ymin(3) = -13
+    Profile_Panels2_ymax(3) = -2
+
+    Profile_Panels2_other_yaxis_name(3) = 'lum_conv'
+    Profile_Panels2_other_yaxis_log(3) = .true.
+    Profile_Panels2_other_ymin(3) = -13
+    Profile_Panels2_other_ymax(3) = -2
+
+
+    Profile_Panels2_yaxis_name(4) = 'dS_dZ_rho_P'
+    Profile_Panels2_ymin(4) = -9
+    Profile_Panels2_ymax(4) = 1
+
+    Profile_Panels2_other_yaxis_name(4) = 'S_eff'
+    ! Profile_Panels2_other_yaxis_log(4) = .true.
+    !Profile_Panels2_other_ymin(4) = -1
+    !Profile_Panels2_other_ymax(4) = 15
+
+
+    Profile_Panels2_yaxis_name(5) = 'total_energy'
+    ! Profile_Panels2_yaxis_log(5) = .false.
+    Profile_Panels2_ymin(5) = -2d13
+    Profile_Panels2_ymax(5) = 8d12
+
+    Profile_Panels2_other_yaxis_name(5) = 'energy'
+    Profile_Panels2_other_ymin(5) = -2d13
+    Profile_Panels2_other_ymax(5) = 8d12
+    
+
+    ! Profile Panels
+    ! ==============
+    Profile_Panels3_win_flag = .false.
+    Profile_Panels3_title = ''
+    Profile_Panels3_win_width = 6 ! 12
+    Profile_Panels3_win_aspect_ratio = 1.25 !1.25
+    Profile_Panels3_xleft = 0.15
+    Profile_Panels3_txt_scale = 0.5
+    Profile_Panels3_xright = 0.84
+    Profile_Panels3_ybot = 0.075
+    Profile_Panels3_ytop = .93
+    Profile_Panels3_num_panels = 1
+    Profile_Panels3_show_mix_regions_on_xaxis = .true.
+
+    ! set axis quants
+    Profile_Panels3_xaxis_name = 'mass_Jup'
+    Profile_Panels3_xaxis_reversed = .false.
+    !Profile_Panels3_xmin = 2.5
+    !Profile_Panels3_xmax = 5
+
+    Profile_Panels3_yaxis_name(1) = 'energy'
+    Profile_Panels3_other_yaxis_name(1) = 'total_energy'
+
+    ! Grid
+    ! ====
+    Grid1_win_flag = .false.
+    Grid1_win_width = 12 ! mac: 6, else 12.
+    Grid1_win_aspect_ratio = 0.6
+    Grid1_xleft = 0.04
+    Grid1_xright = 0.96
+    Grid1_ybot = 0.07
+    Grid1_ytop = 0.92
+
+    Grid1_num_cols = 3
+    Grid1_num_rows = 8
+    Grid1_num_plots = 5
+
+    Grid1_plot_name(1) = 'Profile_Panels1'
+    Grid1_plot_row(1) = 1
+    Grid1_plot_rowspan(1) = 8
+    Grid1_plot_col(1) = 1
+    Grid1_plot_colspan(1) = 1
+    Grid1_plot_pad_left(1) = 0.0
+    Grid1_plot_pad_right(1) = 0.075
+    Grid1_plot_pad_top(1) = 0.0
+    Grid1_plot_pad_bot(1) = 0.0
+    Grid1_txt_scale_factor(1) = 0.7
+
+    Grid1_plot_name(2) = 'Profile_Panels2'
+    Grid1_plot_row(2) = 1
+    Grid1_plot_rowspan(2) = 8
+    Grid1_plot_col(2) = 2
+    Grid1_plot_colspan(2) = 1
+    Grid1_plot_pad_left(2) = 0.0
+    Grid1_plot_pad_right(2) = 0.075
+    Grid1_plot_pad_top(2) = 0.0
+    Grid1_plot_pad_bot(2) = 0.0
+    Grid1_txt_scale_factor(2) = 0.7
+
+    Grid1_plot_name(3) = 'History_Panels1'
+    Grid1_plot_row(3) = 1
+    Grid1_plot_rowspan(3) = 6
+    Grid1_plot_col(3) = 3
+    Grid1_plot_colspan(3) = 1
+    Grid1_plot_pad_left(3) = 0.03
+    Grid1_plot_pad_right(3) = 0.0
+    Grid1_plot_pad_top(3) = 0.0
+    Grid1_plot_pad_bot(3) = 0.05
+    Grid1_txt_scale_factor(3) = 0.5
+
+    Grid1_plot_name(4) = 'TRho_Profile'
+    Grid1_plot_row(4) = 6
+    Grid1_plot_rowspan(4) = 3
+    Grid1_plot_col(4) = 3
+    Grid1_plot_colspan(4) = 1
+    Grid1_plot_pad_left(4) = 0.03
+    Grid1_plot_pad_right(4) = 0.0
+    Grid1_plot_pad_top(4) = 0.07
+    Grid1_plot_pad_bot(4) = 0.0
+    Grid1_txt_scale_factor(4) = 0.7
+
+    Grid1_file_flag = .false.
+    Grid1_file_dir = 'png'
+    Grid1_file_prefix = 'interior_structure_grid_'
+    Grid1_file_interval = 25
+    Grid1_file_width = 45
+    Grid1_file_aspect_ratio = -1
+
+    ! Profile Panels
+    ! ==============
+
+    Profile_Panels4_win_flag = .false.
+    Profile_Panels4_win_width = 12
+    Profile_Panels4_win_aspect_ratio = 0.5625
+
+    Profile_Panels4_xleft = 0.175
+    Profile_Panels4_xright = 0.8
+    Profile_Panels4_ybot = 0.175
+    Profile_Panels4_ytop = 0.85
+    Profile_Panels4_txt_scale = 2.0
+    Profile_Panels4_title = ''
+
+    Profile_Panels4_xaxis_name = 'mass_Jup'
+    Profile_Panels4_xaxis_reversed = .false.
+    Profile_Panels4_xmin = -101d0
+    Profile_Panels4_xmax = -101d0
+    Profile_Panels4_xmargin = 0d0
+    Profile_Panels4_show_mix_regions_on_xaxis = .true.
+
+    Profile_Panels4_num_panels = 1
+
+    Profile_Panels4_yaxis_name(1) = 'S_eff'
+    ! Profile_Panels4_ymin(1) = 0d0
+    ! Profile_Panels4_ymax(1) = 10.1d0
+
+    Profile_Panels4_other_yaxis_name(1) = 'entropy'
+    Profile_Panels4_other_ymin(1) = 0d0
+    Profile_Panels4_other_ymax(1) = 12.1d0
+
+    Profile_Panels4_file_flag = .false.
+    Profile_Panels4_file_dir = 'png'
+    Profile_Panels4_file_prefix = 'profile_Panels4_'
+    Profile_Panels4_file_interval = 1
+    Profile_Panels4_file_width = 18
+    Profile_Panels4_file_aspect_ratio = -1
+    
+
+/ ! end of pgstar namelist

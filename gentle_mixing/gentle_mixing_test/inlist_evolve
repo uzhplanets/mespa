@@ -1,0 +1,154 @@
+! inlist_evolve
+
+&star_job
+
+      report_retries = .true.
+
+      load_saved_model = .true.
+      load_model_filename     = '1_M_J_Y_gradient.mod'
+
+      save_model_when_terminate = .true.
+      save_model_filename = 'evolved.mod'
+
+      save_photo_when_terminate  = .true.
+      show_log_description_at_start = .false.
+      
+      ! when to stop
+      required_termination_code_string = 'max_age'
+
+
+      ! reset age
+      set_initial_age = .true.
+      initial_age = 0d0
+      
+      ! reset model number
+      set_initial_model_number = .true.
+      
+      ! reset energy error
+      set_initial_cumulative_energy_error = .true.
+
+
+/ !end of star_job
+
+
+&controls
+
+   log_directory   = 'LOGS'
+
+   ! mixing parameters
+   ! =================
+   mixing_length_alpha = 1d0
+   MLT_option = 'Henyey'
+   mix_factor = 1d0
+   prune_bad_cz_min_Hp_height = 1d0
+   steps_before_use_velocity_time_centering = 0
+
+   ! Ledoux criterion
+   use_Ledoux_criterion = .true.
+   num_cells_for_smooth_gradL_composition_term = 0
+
+   ! gentle mixing
+   ! =================
+   do_gentle_mixing  = .true.
+   gentle_mixing_iso = 'he4' ! Element of which we check that the gradient is gentle; Z = 'o16', Y = 'he4'
+
+   ! MLT part
+   gentle_mixing_critical_msd_solver  = 1d-2 !1d-3
+   gentle_mixing_critical_dXi_solver = 1d0
+   gentle_mixing_reduce_mixing_length   = .false.
+   gentle_mixing_timpestep_reduction_threshold_yr = 1d4
+   energy_eqn_option = 'dedt'
+
+   ! CPM part
+   do_conv_premix = .true.
+   conv_premix_fix_vars = 'PS'
+   gentle_mixing_critical_msd_cpm = 1d-2
+   gentle_mixing_critical_dXi_cpm = 0.05d0
+   gentle_mixing_maximum_cpm_extend = 0.98d0
+
+   ! mesh controls
+   ! ===============
+   convective_bdy_weight = 2.0
+   mesh_delta_coeff = 0.25d0
+
+   ! when to stop
+   ! ===============
+   max_model_number = 5000
+   max_age = 1d9
+
+   ! solver controls
+   ! ===============
+
+   solver_max_tries_before_reject = 40
+   max_tries_for_retry = 50
+   max_tries_after_5_retries = 60
+   max_tries_after_10_retries = 70
+   max_tries_after_20_retries = 80
+
+   use_gold_tolerances = .false.
+
+   tol_residual_norm1 = 1d-8
+   tol_max_residual1 = 1d-6
+   iter_for_resid_tol2 = 25
+
+   tol_residual_norm2 = 1d-6
+   tol_max_residual2 = 1d-4
+   iter_for_resid_tol3 = 30
+
+   tol_residual_norm3 = 1d-5
+   tol_max_residual3 = 1d-3 
+
+   solver_iters_timestep_limit = 35
+
+   max_resid_jump_limit = 1d18
+   max_corr_jump_limit = 1d18
+
+   ! hydro solver
+   hydro_mtx_max_allowed_logT = 6d0
+   hydro_mtx_min_allowed_logT = 2d0
+
+   
+   ! atmosphere
+   ! ==========
+   atm_option = 'irradiated_grey'
+   atm_irradiated_opacity = 'iterated'
+   atm_irradiated_T_eq = 122d0
+   atm_irradiated_max_iters = 500
+   atm_irradiated_kap_v = 3.56762d-3
+   atm_irradiated_P_surf = 1d4
+
+   ! timestep controls
+   ! =================
+   max_years_for_timestep = 1d7
+   
+   ! debug
+   report_ierr = .true.
+   report_solver_progress = .false.
+   report_solver_dt_info = .false.
+   report_dt_hard_limit_retries = .false.
+
+   ! output to files and terminal
+   ! ===========================
+
+   ! photos
+   photo_interval = 10
+   write_profiles_flag = .true.
+
+   ! profiles
+   profile_interval = 1000000  ! we save profiles via an alternative routine in run_star_extras.f90
+   max_num_profile_models = 100000
+
+   ! history
+   history_interval = 10
+
+   ! terminal
+   terminal_interval = 1
+   write_header_frequency = 50
+
+   ! other
+   num_trace_history_values = 3
+   trace_history_value_name(1) = 'rel_cumulative_energy_error'
+   trace_history_value_name(2) = 'center_entropy'
+   trace_history_value_name(3) = 'num_zones'
+
+/

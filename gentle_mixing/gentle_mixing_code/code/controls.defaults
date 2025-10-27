@@ -1,0 +1,183 @@
+! anchor = 'conv_premix_dump_snapshots = .false.'
+
+      ! do_gentle_mixing
+      ! ~~~~~~~~~~~~~~
+
+      ! Set to .true. to limit how much the abundace gradient can change per time step.
+      ! This is useful for avoiding numerical instabilities in the convective premixing scheme.
+
+      ! ::
+
+    do_gentle_mixing = .false.
+
+      ! conv_premix_fix_vars
+      ! ~~~~~~~~~~~~~~
+      
+      ! Set to the variables that should be kept constant during the convective premixing iterations.
+      ! Options are 'PT', 'PD', 'PS', and 'DT'.
+      ! 'PT' keeps pressure and temperature constant.
+      ! 'PD' keeps pressure and density constant.
+      ! 'PS' keeps pressure and total entropy over the mixed region constant.
+      ! 'DT' keeps density and temperature constant.
+      ! This option replaces the old ``conv_premix_fix_pgas`` control.
+      
+      ! ::
+    
+    conv_premix_fix_vars = 'PT'
+    
+      ! gentle_mixing_iso
+      ! ~~~~~~~~~~~~~~
+      
+      ! Sets the chemical species that is investigated to determine the maximum change in the abundance profile.
+      
+      ! ::
+    
+    gentle_mixing_iso = 'o16'
+    
+      ! gentle_mixing_critical_msd_cpm
+      ! ~~~~~~~~~~~~~~
+      
+      ! Maximum allowed change in the mean square deviation of the abundance profile during convective premixing iterations.
+      
+      ! ::
+    
+    gentle_mixing_critical_msd_cpm = 1d-3
+    
+      ! gentle_mixing_use_adaptive_damping
+      ! ~~~~~~~~~~~~~~
+
+      ! If true, the solver will reduce gentle_mixing_critical_msd_cpm and mix_factor as a function of the number of retries.
+      ! If false, the gentle_mixing_critical_msd_cpm in CPM will be constant while mix_factor will be dampened with the timestep.
+
+      ! ::
+  
+    gentle_mixing_use_adaptive_damping = .true.
+
+      ! gentle_mixing_cpm_damping_factor
+      ! ~~~~~~~~~~~~~~
+
+      ! Damping factor for the convective premixing iterations if gentle_mixing_use_adaptive_damping is set to .true.
+
+      ! ::
+
+    gentle_mixing_cpm_damping_factor = 0.5d0
+
+      ! gentle_mixing_min_msd_cpm
+      ! ~~~~~~~~~~~~~~
+      
+      ! Minimum allowed change in the mean square deviation of the abundance profile during the solver iterations.
+      ! If gentle_mixing_use_adaptive_damping is set to .true., the solver won't damp the mixing if the MSD is below this value.
+
+      ! ::
+
+    gentle_mixing_min_msd_cpm = 1d-4
+
+
+      ! gentle_mixing_critical_msd_solver
+      ! ~~~~~~~~~~~~~~
+
+      ! Maximum allowed change in the mean square deviation of the abundance profile during the solver iterations.
+
+      ! ::
+
+    gentle_mixing_critical_msd_solver = 1d-3
+
+
+      ! gentle_mixing_critical_msd_solver_at_high_Z
+      ! ~~~~~~~~~~~~~~
+
+      ! Maximum allowed change in the mean square deviation of the abundance profile if Z in any cell that convects is above a threshold.
+
+      ! ::
+
+    gentle_mixing_critical_msd_solver_at_high_Z = 1d-3
+
+    
+      ! gentle_mixing_min_Z_for_critical_msd_solver_at_high_Z
+      ! ~~~~~~~~~~~~~~
+
+      ! Threshold for the metallicity above which gentle_mixing_critical_msd_solver_at_high_Z is used. If <0 then it is not used.
+
+      ! ::
+
+    gentle_mixing_min_Z_for_critical_msd_solver_at_high_Z = -1d0
+
+
+      ! gentle_mixing_critical_dXi_cpm
+      ! ~~~~~~~~~~~~~~
+
+      ! Maximum allowed change in the absolute abundance of a cell during the convective premixing iterations.
+
+      ! ::
+
+    gentle_mixing_critical_dXi_cpm = 1d0
+
+      ! gentle_mixing_critical_dXi_solver
+      ! ~~~~~~~~~~~~~~
+
+      ! Maximum allowed change in the absolute abundance of a cell during the solver iterations.
+
+      ! ::
+
+    gentle_mixing_critical_dXi_solver = 1d0
+
+      ! gentle_mixing_timestep_reduction_threshold_yr
+      ! ~~~~~~~~~~~~~~
+
+      ! No timestep reduction will be done if the timestep is smaller than this value.
+      ! The luminosity tends to become unsteady if the timestep is too small.
+      ! This option helps to avoid this by not reducing the timestep further if it is already small.
+      ! The right value depends on the evolution timescale of your problem.
+
+      ! ::
+
+    gentle_mixing_timestep_reduction_threshold_yr = 1d4
+
+      ! gentle_mixing_maximum_cpm_extend
+      ! ~~~~~~~~~~~~~~
+
+      ! Maximum extend of the convective premixing region.
+      ! If a convective region expands outside of this limit, the convective premixing is stopped.
+      ! The solver, however, will still be able to mix the region.
+      ! This helps when there is an abundace discontinuity between the envelope and the atmosphere.
+      ! Sometimes, convective premixing will lead to a negative surface luminoisty, which is unphysical.
+      ! To avoid this, this option allows to ignore the convective premixing in the outer layers.
+
+      ! ::
+
+    gentle_mixing_maximum_cpm_extend = 1d0
+
+      ! skip_cpm_if_initial_model_too_unstable
+      ! ~~~~~~~~~~~~~~
+
+      ! If true, checks the MSD of `gentle_mixing_iso` from mixing the existing convective regions fully (i.e., without advancing any boundary).
+      ! This is also done during CPM while advancing a convective boundary.
+      ! If `MSD > gentle_mixing_critical_msd_cpm` CPM will be skipped. 
+      ! Typically, you want to set this to `.false.` 
+      ! However, sometimes the model converges better if you mix most of the material first just using the solver and only later CPM.
+
+      ! ::
+
+    skip_cpm_if_initial_model_too_unstable = .false.
+
+      ! gentle_mixing_skip_boundaries_if_any_unstable
+      ! ~~~~~~~~~~~~~~
+
+      ! If true, exits convective premixing if the last boundary that was extended exceeded the critical MSD.
+      ! This saves time if the model is already close to the mixing limit and expending any of the other boundaries would also exceed the limit.
+      ! Sometimes, however, the model tries to mix a large convective layer early on that already exceeds the limit.
+      ! In this case, you want to set this to `.false.`, because you otherwise skip the mixing of the other boundaries.
+      ! If unsure, set this to `.false.`.
+      
+      ! ::
+
+    gentle_mixing_skip_boundaries_if_any_unstable = .false.
+
+      ! gentle_mixing_reduce_mixing_length
+      ! ~~~~~~~~~~~~~~
+
+      ! If true, the mixing length - instead of the mixing factor - will be reduced by gentle_mixing.
+
+      ! ::
+
+      gentle_mixing_reduce_mixing_length = .false.
