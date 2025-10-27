@@ -1,0 +1,19 @@
+
+&kap
+!Zbase = 0.02d0 ! MESA default: 0.02d0; Lodders 21: 1.74064d-2
+
+kap_file_prefix = 'gs98'
+kap_lowT_prefix = 'lowT_Freedman11'
+use_Type2_opacities = .false.
+use_Zbase_for_Type1 = .false.
+
+cubic_interpolation_in_X = .true.
+cubic_interpolation_in_Z = .true.
+
+/ ! end of kap namelist
+
+&controls
+
+use_other_kap = .false.
+
+/ ! end of controls namelist
