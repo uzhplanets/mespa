@@ -1,6 +1,6 @@
 # Modules for Experiments in Stellar and Planetary Astrophysics (MESPA)
 
-Welcome! Modules for Experiments in Stellar and Planetary Astrophysics (MESPA) implements various modifications to the [MESA](https://mesastar.org/) stellar evolution code to make it suitable for sophisticated planetary models. It adds a custom equation of state (`custom_eos`), opacity modifications (`custom_kap`), a new mixing scheme (`gentle_mixing`) and support for element sedimentation (`element_sedimentation`)
+Welcome! Modules for Experiments in Stellar and Planetary Astrophysics (MESPA) implements various modifications to the [MESA](https://mesastar.org/) stellar evolution code to make it suitable for sophisticated planetary models. It adds a custom equation of state (`custom_eos`), opacity modifications (`custom_kap`), a new mixing scheme (`gentle_mixing`) and support for element sedimentation (`element_sedimentation`).
 
 ## Getting started with the custom equation of state and opacity modifications
 This quickstart guide assumes you have installed MESA and have some familiarity with it.
@@ -95,7 +95,7 @@ Before installing, make sure `$MESA_DIR` is set to your main MESA directory. The
 
 That's it! You can now use `gentle_mixing` in your MESA projects. You can find the new options that `gentle_mixing` introduces either below or in the `controls.defaults` file inside the `$MESA_DIR/star/default` directory (after installation).
 
-If you get annoyed by the extra output by `gentle_mixing`, set `TRACE_GENTLE_MIXING = .false.` in `gentle_mixing.f90` and recompile MESA and your work directory. (And yes, I will make this an inlist option in the future. :))
+If you get annoyed by the extra output by `gentle_mixing`, set `TRACE_GENTLE_MIXING = .false.` in `gentle_mixing.f90` and recompile MESA and your work directory. (And yes, we will make this an inlist option in the future. :))
 
 ### Introduction
 
@@ -135,7 +135,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! ~~~~~~~~~~~~~~
 
       ! Set to .true. to limit how much the abundace gradient can change per time step.
-      ! This is useful for avoiding numerical instabilities in the convective premixing scheme.
+      ! This is useful for avoiding numerical instabilities in the convective
+      ! premixing scheme.
 
       ! ::
 
@@ -144,7 +145,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! conv_premix_fix_vars
       ! ~~~~~~~~~~~~~~
       
-      ! Set to the variables that should be kept constant during the convective premixing iterations.
+      ! Set to the variables that should be kept constant during the convective
+      ! premixing iterations.
       ! Options are 'PT', 'PD', 'PS', and 'DT'.
       ! 'PT' keeps pressure and temperature constant.
       ! 'PD' keeps pressure and density constant.
@@ -159,7 +161,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_iso
       ! ~~~~~~~~~~~~~~
       
-      ! Sets the chemical species that is investigated to determine the maximum change in the abundance profile.
+      ! Sets the chemical species that is investigated to determine the maximum change in 
+      ! the abundance profile.
       
       ! ::
     
@@ -168,7 +171,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_critical_msd_cpm
       ! ~~~~~~~~~~~~~~
       
-      ! Maximum allowed change in the mean square deviation of the abundance profile during convective premixing iterations.
+      ! Maximum allowed change in the mean square deviation of the abundance profile
+      ! during convective premixing iterations.
       
       ! ::
     
@@ -177,8 +181,10 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_use_adaptive_damping
       ! ~~~~~~~~~~~~~~
 
-      ! If true, the solver will reduce gentle_mixing_critical_msd_cpm and mix_factor as a function of the number of retries.
-      ! If false, the gentle_mixing_critical_msd_cpm in CPM will be constant while mix_factor will be dampened with the timestep.
+      ! If true, the solver will reduce gentle_mixing_critical_msd_cpm and mix_factor as a 
+      ! function of the number of retries.
+      ! If false, the gentle_mixing_critical_msd_cpm in CPM will be constant while 
+      ! mix_factor will be dampened with the timestep.
 
       ! ::
   
@@ -187,7 +193,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_cpm_damping_factor
       ! ~~~~~~~~~~~~~~
 
-      ! Damping factor for the convective premixing iterations if gentle_mixing_use_adaptive_damping is set to .true.
+      ! Damping factor for the convective premixing iterations if 
+      ! gentle_mixing_use_adaptive_damping is set to .true.
 
       ! ::
 
@@ -196,8 +203,10 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_min_msd_cpm
       ! ~~~~~~~~~~~~~~
       
-      ! Minimum allowed change in the mean square deviation of the abundance profile during the solver iterations.
-      ! If gentle_mixing_use_adaptive_damping is set to .true., the solver won't damp the mixing if the MSD is below this value.
+      ! Minimum allowed change in the mean square deviation of the abundance profile 
+      ! during the solver iterations.
+      ! If gentle_mixing_use_adaptive_damping is set to .true., the solver won't damp the 
+      ! mixing if the MSD is below this value.
 
       ! ::
 
@@ -207,7 +216,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_critical_msd_solver
       ! ~~~~~~~~~~~~~~
 
-      ! Maximum allowed change in the mean square deviation of the abundance profile during the solver iterations.
+      ! Maximum allowed change in the mean square deviation of the abundance profile 
+      ! during the solver iterations.
 
       ! ::
 
@@ -217,7 +227,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_critical_msd_solver_at_high_Z
       ! ~~~~~~~~~~~~~~
 
-      ! Maximum allowed change in the mean square deviation of the abundance profile if Z in any cell that convects is above a threshold.
+      ! Maximum allowed change in the mean square deviation of the abundance profile if Z 
+      ! in any cell that convects is above a threshold.
 
       ! ::
 
@@ -227,7 +238,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_min_Z_for_critical_msd_solver_at_high_Z
       ! ~~~~~~~~~~~~~~
 
-      ! Threshold for the metallicity above which gentle_mixing_critical_msd_solver_at_high_Z is used. If <0 then it is not used.
+      ! Threshold for the metallicity above which 
+      ! gentle_mixing_critical_msd_solver_at_high_Z is used. If <0 then it is not used.
 
       ! ::
 
@@ -237,7 +249,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_critical_dXi_cpm
       ! ~~~~~~~~~~~~~~
 
-      ! Maximum allowed change in the absolute abundance of a cell during the convective premixing iterations.
+      ! Maximum allowed change in the absolute abundance of a cell during the convective 
+      ! premixing iterations.
 
       ! ::
 
@@ -246,7 +259,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_critical_dXi_solver
       ! ~~~~~~~~~~~~~~
 
-      ! Maximum allowed change in the absolute abundance of a cell during the solver iterations.
+      ! Maximum allowed change in the absolute abundance of a cell during the
+      ! solver iterations.
 
       ! ::
 
@@ -257,7 +271,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
 
       ! No timestep reduction will be done if the timestep is smaller than this value.
       ! The luminosity tends to become unsteady if the timestep is too small.
-      ! This option helps to avoid this by not reducing the timestep further if it is already small.
+      ! This option helps to avoid this by not reducing the timestep further if it is 
+      ! already small.
       ! The right value depends on the evolution timescale of your problem.
 
       ! ::
@@ -268,11 +283,15 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! ~~~~~~~~~~~~~~
 
       ! Maximum extend of the convective premixing region.
-      ! If a convective region expands outside of this limit, the convective premixing is stopped.
+      ! If a convective region expands outside of this limit, the convective
+      ! premixing is stopped.
       ! The solver, however, will still be able to mix the region.
-      ! This helps when there is an abundace discontinuity between the envelope and the atmosphere.
-      ! Sometimes, convective premixing will lead to a negative surface luminoisty, which is unphysical.
-      ! To avoid this, this option allows to ignore the convective premixing in the outer layers.
+      ! This helps when there is an abundace discontinuity between the envelope
+      ! and the atmosphere.
+      ! Sometimes, convective premixing will lead to a negative surface luminoisty, which 
+      ! is unphysical.
+      ! To avoid this, this option allows to ignore the convective premixing
+      ! in the outer layers.
 
       ! ::
 
@@ -281,11 +300,13 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! skip_cpm_if_initial_model_too_unstable
       ! ~~~~~~~~~~~~~~
 
-      ! If true, checks the MSD of `gentle_mixing_iso` from mixing the existing convective regions fully (i.e., without advancing any boundary).
+      ! If true, checks the MSD of `gentle_mixing_iso` from mixing the existing convective 
+      ! regions fully (i.e., without advancing any boundary).
       ! This is also done during CPM while advancing a convective boundary.
       ! If `MSD > gentle_mixing_critical_msd_cpm` CPM will be skipped. 
       ! Typically, you want to set this to `.false.` 
-      ! However, sometimes the model converges better if you mix most of the material first just using the solver and only later CPM.
+      ! However, sometimes the model converges better if you mix most of the material 
+      ! first just using the solver and only later CPM.
 
       ! ::
 
@@ -294,10 +315,14 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_skip_boundaries_if_any_unstable
       ! ~~~~~~~~~~~~~~
 
-      ! If true, exits convective premixing if the last boundary that was extended exceeded the critical MSD.
-      ! This saves time if the model is already close to the mixing limit and expending any of the other boundaries would also exceed the limit.
-      ! Sometimes, however, the model tries to mix a large convective layer early on that already exceeds the limit.
-      ! In this case, you want to set this to `.false.`, because you otherwise skip the mixing of the other boundaries.
+      ! If true, exits convective premixing if the last boundary that was extended 
+      ! exceeded the critical MSD.
+      ! This saves time if the model is already close to the mixing limit and expending 
+      ! any of the other boundaries would also exceed the limit.
+      ! Sometimes, however, the model tries to mix a large convective layer early on that 
+      ! already exceeds the limit.
+      ! In this case, you want to set this to `.false.`, because you otherwise skip the 
+      ! mixing of the other boundaries.
       ! If unsure, set this to `.false.`.
       
       ! ::
@@ -307,7 +332,8 @@ The Options for `gentle_mixing` are set in the `controls` namelist. They are:
       ! gentle_mixing_reduce_mixing_length
       ! ~~~~~~~~~~~~~~
 
-      ! If true, the mixing length - instead of the mixing factor - will be reduced by gentle_mixing.
+      ! If true, the mixing length - instead of the mixing factor - will be reduced by 
+      ! gentle_mixing.
 
       ! ::
 
@@ -343,10 +369,14 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! ~~~~~~~~~~~~~~
       
       ! Method to use for the mass transfer of the helium rain.
-      ! Options are 'instant_rain', 'bottom_up_rain', and 'advection_diffusion_rain' (in increasing order of complexity).
-      ! 'instant_rain' will transfer all the rain mass at once, updating the model afterwards.
-      ! 'bottom_up_rain' will transfer the rain cell by cell from the bottom up, adjusting the model as it goes.
-      ! 'advection_diffusion_rain' runs a full advection-diffusion solver until a steady state between advecting rain and diffusing convection is reached.
+      ! Options are 'instant_rain', 'bottom_up_rain', and 'advection_diffusion_rain' (in 
+      ! increasing order of complexity).
+      ! 'instant_rain' will transfer all the rain mass at once, updating the model 
+      ! afterwards.
+      ! 'bottom_up_rain' will transfer the rain cell by cell from the bottom up, adjusting 
+      ! the model as it goes.
+      ! 'advection_diffusion_rain' runs a full advection-diffusion solver until a steady 
+      ! state between advecting rain and diffusing convection is reached.
       
       ! ::
     
@@ -355,7 +385,8 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_velocity_method
       ! ~~~~~~~~~~~~~~
       
-      ! The method to use for determining the sedimentation velocity of the element. Only applies to 'advection_diffusion_rain'.
+      ! The method to use for determining the sedimentation velocity of the element. Only 
+      ! applies to 'advection_diffusion_rain'.
       ! Currently, only 'constant' is supported.
       
       ! ::
@@ -365,7 +396,8 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_velocity
       ! ~~~~~~~~~~~~~~
       
-      ! Sedimentation velocity of the element droplets in cm/s. Only applies to 'advection_diffusion_rain'.
+      ! Sedimentation velocity of the element droplets in cm/s. Only applies to 
+      ! 'advection_diffusion_rain'.
       
       ! ::
     
@@ -374,8 +406,10 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_advection_diffusion_time_step_factor
       ! ~~~~~~~~~~~~~~
 
-      ! The time step for the advection-diffusion solver is determined as a fraction of the advection/diffusion time scale.
-      ! element_sedimentation_advection_diffusion_time_step_factor is the factor that is multiplied with the advection/diffusion time scale to determine the time step.
+      ! The time step for the advection-diffusion solver is determined as a fraction of 
+      ! the advection/diffusion time scale.
+      ! element_sedimentation_advection_diffusion_time_step_factor is the factor that is 
+      ! multiplied with the advection/diffusion time scale to determine the time step.
       ! Only applies to 'advection_diffusion_rain'.
 
       ! ::
@@ -385,7 +419,8 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_maximum_dXi_per_cell
       ! ~~~~~~~~~~~~~~
 
-      ! Maximum allowed absolute change in the abundance of the sedimenting species per cell during an evolution step.
+      ! Maximum allowed absolute change in the abundance of the sedimenting species per 
+      ! cell during an evolution step.
       ! Can help with convergence if too much material is raining out at once.
       ! Negative values will disable this limit.
 
@@ -396,8 +431,10 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_phase_diagram
       ! ~~~~~~~~~~~~~~
       
-      ! Path to the phase diagram file for the sedimenting chemical species. The file should be a CSV file with the following columns:
-      ! One header line with the column names (lower miscibility limit, upper miscibility limit, temperature (K), pressure (Mbar)).
+      ! Path to the phase diagram file for the sedimenting chemical species. The file 
+      ! should be a CSV file with the following columns:
+      ! One header line with the column names (lower miscibility limit, upper miscibility 
+      ! limit, temperature (K), pressure (Mbar)).
       ! Followed by the data lines (comma separeted) with the values for each column.
 
       ! ::
@@ -418,7 +455,8 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_extrapolate_phase_diagram
       ! ~~~~~~~~~~~~~~
 
-      ! If true, the phase diagram will be (linearly) extrapolated in temperature outside of the range of the phase diagram.
+      ! If true, the phase diagram will be (linearly) extrapolated in temperature outside 
+      ! of the range of the phase diagram.
     
       ! ::
 
@@ -428,8 +466,10 @@ The current options for helium rain are (reproduced from the `&controls` referen
       ! element_sedimentation_chemical_species
       ! ~~~~~~~~~~~~~~
 
-      ! Chemical species to use for the sedimentation. This should be the name of the element in the phase diagram file.
-      ! The default is 'he4' for helium rain, but can be changed to other elements if needed.
+      ! Chemical species to use for the sedimentation. This should be the name of the 
+      ! element in the phase diagram file.
+      ! The default is 'he4' for helium rain, but can be changed to other elements if 
+      ! needed.
 
       ! ::
 
