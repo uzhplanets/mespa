@@ -1,6 +1,6 @@
 # Modules for Experiments in Stellar and Planetary Astrophysics (MESPA)
 
-Welcome! Modules for Experiments in Stellar and Planetary Astrophysics (MESPA) implements various modifications to the [MESA](https://mesastar.org/) stellar evolution code to make it suitable for sophisticated planetary models. It adds a custom equation of state (`custom_eos`), opacity modifications (`custom_kap`), a new mixing scheme (`gentle_mixing`) and support for element sedimentation (`element_sedimentation`).
+Welcome! Modules for Experiments in Stellar and Planetary Astrophysics (MESPA) implements various modifications to the [MESA](https://mesastar.org/) stellar evolution code to make it suitable for sophisticated planetary models. It adds a custom equation of state (`custom_eos`), opacity modifications (`custom_kap`), a new mixing scheme (`gentle_mixing`) and support for element sedimentation (`element_sedimentation`). More details are described in [Helled, Müller, and Knierim (2025)](https://ui.adsabs.harvard.edu/abs/2025arXiv251023678H/abstract).
 
 ## Getting started with the custom equation of state and opacity modifications
 This quickstart guide assumes you have installed MESA and have some familiarity with it.
