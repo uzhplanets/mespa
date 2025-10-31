@@ -86,12 +86,7 @@ To-do: Add description.
 
 ### Quickstart
 
-Before installing, make sure `$MESA_DIR` is set to your main MESA directory. Then, run the following commands:
-
-1.  First, clone the repository
-2.  `cd gentle_mixing`
-3.  Run `python setup.py install`
-4.  `cd` into your MESA work directory and run `./clean && ./mk`.
+Go inside the `gentle_mixing/gentle_mixing_code` directory and run `python setup.py install` to install the gentle-mixing package. This will copy the Fortran source files into your MESA project and compile them. Afterwards, run `./mk` inside the test suite `gentle_mixing/gentle_mixing_test` to check if everything is working correctly. For your own project, don't forget to run `./clean` and `./mk` to ensure that the new files are compiled correctly.
 
 That's it! You can now use `gentle_mixing` in your MESA projects. You can find the new options that `gentle_mixing` introduces either below or in the `controls.defaults` file inside the `$MESA_DIR/star/default` directory (after installation).
 
@@ -343,11 +338,11 @@ For more details on the code and options, see the documentation in `gentle_mixin
 
 
 ## Element sedimentation
-An implementation of element sedimentation in MESA. This repository contains two important folders: `helium_rain` and `planet_helium_rain`. The `helium_rain` folder contains the code for the helium rain algorithm, while the `planet_helium_rain` folder is a test case for the helium rain algorithm.
+An implementation of element sedimentation in MESA. This repository contains two important folders: `element_sedimentation/element_sedimentation_code` and `element_sedimentation/element_sedimentation_test`. The `element_sedimentation_code` folder contains the code for the helium rain algorithm, while the `element_sedimentation_test` folder is a test case for the helium rain algorithm.
 
 ### Quickstart
 #### Installation
-Go inside the `element_sedimentation` directory and run `python setup.py install` to install the helium rain package. This will copy the Fortran source files into your MESA project and compile them. Afterwards, run `./mk` inside the test suite `planet_helium_rain` to check if everything is working correctly. For your own project, don't forget to run `./clean` and `./mk` to ensure that the new files are compiled correctly.
+Go inside the `element_sedimentation/element_sedimentation_code` directory and run `python setup.py install` to install the element-sedimentation package. This will copy the Fortran source files into your MESA project and compile them. Afterwards, run `./mk` inside the test suite `element_sedimentation/element_sedimentation_test` to check if everything is working correctly. For your own project, don't forget to run `./clean` and `./mk` to ensure that the new files are compiled correctly.
 
 #### Options
 The current options for helium rain are (reproduced from the `&controls` reference file of your MESA project):
