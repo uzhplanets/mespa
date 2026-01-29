@@ -281,38 +281,14 @@ contains
             + kap_clouds * dlnkap_clouds_dlnT &
             )
 
-      ! combine the total radiative opacity (gas, grains and clouds)
-      ! with the electron conductive opacity
+      ! combine the total radiative opacity with the electron conductive opacity
       call combine_rad_with_conduction( &
          kap_rq, logRho, logT, zbar, &
          kap_rad_tot, dlnkap_rad_tot_dlnRho, dlnkap_rad_tot_dlnT, &
          kap_ec, dlnkap_ec_dlnRho, dlnkap_ec_dlnT, &
          kap, dlnkap_dlnRho, dlnkap_dlnT, ierr &
       )
-      dlnkap_dxa = 0  ! composition derivatives not implemented
-
-      ! if (kap_clouds > 0) then
-      !    write(*, *) "----------------"
-      !    ! write(*, *) "kap_tot", kap
-      !    ! write(*, *) "dln_kap_tot_dlnRho", dlnkap_dlnRho
-      !    ! write(*, *) "dln_kap_tot_dlnT", dlnkap_dlnT
-      !    ! write(*, *) "kap_rad_tot", kap_rad_tot
-      !    ! write(*, *) "dln_kap_rad_dlnRho", dlnkap_rad_dlnRho
-      !    ! write(*, *) "dln_kap_rad_dlnT", dlnkap_rad_dlnT
-      !    write(*, *) "kap_ec", kap_ec
-      !    write(*, *) "dln_kap_ec_dlnRho", dlnkap_ec_dlnRho
-      !    write(*, *) "dln_kap_ec_dlnT", dlnkap_ec_dlnT
-      !    write(*, *) "kap_rad", kap_rad
-      !    write(*, *) "dln_kap_rad_dlnRho", dlnkap_rad_dlnRho
-      !    write(*, *) "dln_kap_rad_dlnT", dlnkap_rad_dlnT
-      !    ! write(*, *) "kap_grains", kap_grains
-      !    ! write(*, *) "dln_kap_grains_dlnRho", dlnkap_grains_dlnRho
-      !    ! write(*, *) "dln_kap_grains_dlnT", dlnkap_grains_dlnT
-      !    write(*, *) "kap_clouds", kap_clouds
-      !    write(*, *) "dln_kap_clouds_dlnRho", dlnkap_clouds_dlnRho
-      !    write(*, *) "dln_kap_clouds_dlnT", dlnkap_clouds_dlnT
-      !    write(*, *) "----------------"
-      ! end if
+      dlnkap_dxa = 0  ! composition derivatives are not implemented
 
    end subroutine custom_kap_get
 
@@ -356,7 +332,7 @@ contains
       real(dp), parameter :: c1 = 0.0245d0
 
       kap_grains_T1 = get_only_kap_grains(logT1, f_grains)
-      kap_grains_T2 = 0d0  ! get_only_kap_grains(logT2_star, f_grains)
+      kap_grains_T2 = 0d0
       kap_grains = kap_grains_T1 + (kap_grains_T2 - kap_grains_T1) / (logT2 - logT1) * (logT - logT1)
 
       dlogT1_dlogT = -3d0 * c1
@@ -374,7 +350,7 @@ contains
       dlogT1_dlogRho = c1
       dlogT2_dlogRho = c1
       dkap_grains_T1_dlogRho = kap_grains_T1 * ln10 * c0 * dlogT1_dlogRho
-      dkap_grains_T2_dlogRho = 0d0  ! kap_grains_T2 * ln10 * c0 * d_log10_T2_d_log10_Rho
+      dkap_grains_T2_dlogRho = 0d0
       dlogT_dlogRho = 0d0
       dkap_grains_dlogRho = dkap_grains_T1_dlogRho &
                                  + (kap_grains - kap_grains_T1) &

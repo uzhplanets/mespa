@@ -540,8 +540,6 @@ contains
       integer, intent(in) :: which_eosdt
       type(DT_xz_Info), pointer :: xz
       integer, intent(in) :: ix, iz
-
-      !character (len=256) :: data_dir ! = '../giant_planet_growth_r24.03.1/src/data' !'./src/data'
       character(len=*), intent(out) :: fname, cache_filename, temp_cache_filename
       character(len=256) :: Zstr, Xstr, suffix, data_prefix
       real(dp) :: X, Z
