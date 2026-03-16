@@ -5,7 +5,6 @@ module custom_kap
    ! kap control parameters:
    ! kap_logical_ctrl(1): Enable/disable grain opacity
    ! kap_logical_ctrl(2): Enable/disable cloud opacity
-   ! kap_logical_ctrl(3): Enable/disable the opacity window
    ! kap_ctrl(1): Scaling factor for the grain opacity
    ! kap_ctrl(2): Ramp-up time for the grain opacity
    ! kap_ctrl(3): Cloud-opacity normalisation
@@ -47,19 +46,18 @@ contains
 
       kap_rq => kap_handles(s% kap_handle)
 
-      if (.not. kap_rq% kap_logical_ctrl(3)) then
-         return
-      end if
+      ! Default behaviour
+      s% extra_opacity_factor = s% opacity_factor
 
-      if (s% star_age < kap_rq% kap_ctrl(8)) then
-         ! do not apply the opacity window before this time
-         s% extra_opacity_factor = 1d0
-      else
+      ! Apply opacity window if the star is old enough;
+      ! see eq. (1) in Müller & Helled (2024) (doi:10.3847/1538-4357/ad3738)
+      if (s% star_age >= kap_rq% kap_ctrl(8)) then
          do k = 1, s% nz
             logT = log10(s% T(k))
-            s% extra_opacity_factor(k) = 1d0 &
-            - kap_rq% kap_ctrl(7) &
-            * exp(-0.5d0 * pow2((logT - w_loc) / w_scale))
+            s% extra_opacity_factor(k) = &
+            s% extra_opacity_factor(k) &
+            * (1d0 - kap_rq% kap_ctrl(7) &
+               * exp(-0.5d0 * pow2((logT - w_loc) / w_scale)))
          end do
       end if
 
