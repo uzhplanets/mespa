@@ -8,7 +8,7 @@ This quickstart guide assumes you have installed MESA and have some familiarity 
 To get started, following the following steps:
 1. Unzip the files into a directory of your choice. This is where your models will live.
 2. Set the `MESPA_DIR` environment variable to point towards your installation directory; `export MESPA_DIR=PATH_TO_MESPA`.
-3. Run `./mk` in `$MESPA_DIR`. This creates the planet executable that you will use to run your evolution models. You may have to give executable permissions to the `mk` and `clean` files.
+3. Run `./mk` in `$MESPA_DIR`. This creates the planet executable that you will use to run your evolution models.
 
 In the `test_suite` folder, there are two test suite examples to get you started with using the custom equation of state and opacity subroutines. For example, you can run the custom_eos_test test suite by navigating into its folder and running `./rn`.
 
