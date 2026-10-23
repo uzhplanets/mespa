@@ -3,18 +3,12 @@ module custom_eos
    ! to add support for arbitrary mixtures of hydrogen, helium and a heavy element.
 
    ! eos control parameters:
-   ! eos_integer_ctrl(1): Which equation of state tables to use.
-   !  Options are (depending on availability of tables):
-   !   1: scvh_extended_qeos_h2o
-   !   2: scvh_extended_qeos_mixture
-   !   3: cms_pt_int_qeos_h2o
-   !   4: cms_pt_int_qeos_mixture
-   !   5: extra_eos
-   !   The extra_eos options allows for quickly adding a user-generated table with
-   !   prefix "eosdt_extra_tables".
-   ! eos_integer_ctrl(2): Interpolation method between the heavy-element tables
+   ! eos_character_ctrl(1): Prefix of the equation of state tables to use.
+   !   The tables are read from $MESPA_DIR/eos_tables/<prefix>-eosDT_<Z>z<X>x.data,
+   !   e.g., 'cms_pt_int_qeos_mixture' (depending on availability of tables).
+   ! eos_integer_ctrl(1): Interpolation method between the heavy-element tables
    !   Options are 1 for linear, and 2 for cubic.
-   ! eos_integer_ctrl(3): In-table interpolation method
+   ! eos_integer_ctrl(2): In-table interpolation method
    !   Options are 1 for the MESA default (bi-cubic), 2 for bi-linear if the specific
    !   heats (Cp or Cv) are negative, and 3 for always bi-linear.
 
@@ -84,13 +78,6 @@ module custom_eos
    type(EosDT_XZ_Info), dimension(num_custom_eos_Xs, num_custom_eos_Zs), target :: &
       custom_eos_XZ_data
 
-   ! ids for the the different tables
-   integer, parameter :: scvh_extended_pt_qeos_h2o = 1
-   integer, parameter :: scvh_extended_pt_qeos_mixture = 2
-   integer, parameter :: cms_pt_int_qeos_h2o = 3
-   integer, parameter :: cms_pt_int_qeos_mixture = 4
-   integer, parameter :: eosdt_extra_eos = 5
-
    ! custom controls
    logical, parameter :: custom_use_cache_for_eos = .true.
 
@@ -101,7 +88,7 @@ module custom_eos
    ! 0: mesa default.
    ! 1: linear interpolation if heat capcities are negative
    ! 2: linear interpolation for all values
-   ! reset to eos_integer_ctrl(3) in custom_eos_component to match inlist value
+   ! reset to eos_integer_ctrl(2) in custom_eos_component to match inlist value
    integer :: in_table_interpolation = 0
 
 contains
@@ -160,7 +147,6 @@ contains
 
       ! local variables
       real(dp) :: X, Y, Z, abar, zbar, z2bar, z53bar, ye, mass_correction, sumx
-      integer :: which_eosdt
 
       ! for accessing extra controls
       type(EoS_General_Info), pointer :: eos_rq
@@ -172,24 +158,21 @@ contains
 
       eos_rq => eos_handles(handle)
 
-      if (.not. (eos_rq% eos_integer_ctrl(1) > 0 &
-                  .and. eos_rq% eos_integer_ctrl(1) < 5)) then
-         write (*, *) "custom_eos_component: eos_integer_ctrl(1) is not set correctly."
-         write (*, *) "Please set eos_integer_ctrl(1) to 1, 2, 3, 4 or 5."
+      if (len_trim(eos_rq% eos_character_ctrl(1)) == 0) then
+         write (*, *) "custom_eos_component: eos_character_ctrl(1) is not set."
+         write (*, *) "Please set eos_character_ctrl(1) to the prefix of the eos tables."
          ierr = 1
          return
       end if
-
-      which_eosdt = eos_rq% eos_integer_ctrl(1)
 
       ! Choose in table interpolation method
       ! 0: mesa default
       ! 1: linear interpolation if heat capcities are negative
       ! 2: linear interpolation for all values
-      in_table_interpolation = eos_rq% eos_integer_ctrl(3)
+      in_table_interpolation = eos_rq% eos_integer_ctrl(2)
 
       call get1_for_eosdt( &
-         handle, which_eosdt, Z, X, abar, zbar, &
+         handle, trim(eos_rq% eos_character_ctrl(1)), Z, X, abar, zbar, &
          species, chem_id, net_iso, xa, &
          log10Rho, log10T, mass_correction, &
          res, d_dlnRho_const_T, d_dlnT_const_Rho, d_dxa_const_TRho, &
@@ -245,7 +228,6 @@ contains
 
       ! for accessing extra controls
       type(EoS_General_Info), pointer :: eos_rq
-      integer :: which_eosdt
 
       ! for accessing the EoS tables
       type(EosDT_XZ_Info), pointer :: ep
@@ -283,12 +265,12 @@ contains
 
       ! 1. which eos to use
       eos_rq => eos_handles(handle)
-      which_eosdt = eos_rq% eos_integer_ctrl(1) ! see custom_eos_component for details
 
       ! Note that this code assumes that all iX, iZ of an EoS have the same
       ! logT and logQ bounds. Hence, we load (iX, iZ) = (1, 1) here.
 
-      call load_single_eosDT_table_by_id(which_eosdt, ep, 1, 1, ierr)
+      call load_single_eosDT_table_by_id( &
+         trim(eos_rq% eos_character_ctrl(1)), ep, 1, 1, ierr)
 
       if (ierr /= 0) return
 
@@ -477,17 +459,16 @@ contains
       write (*, '(A)')
       write (*, '(A)')
       write (*, '(a)') 'FATAL ERROR: missing or bad eos data.'
-      write (*, '(a)') 'Please update by removing the directories ' &
-         //'mesa/data/eos*_data' &
-         //' and rerunning the mesa ./install script.'
+      write (*, '(a)') 'Please check that eos_character_ctrl(1) matches the prefix ' &
+         //'of a table set in $MESPA_DIR/eos_tables.'
       write (*, '(A)')
       call mesa_error(__FILE__, __LINE__)
    end subroutine check_for_error_in_eosDT_data
 
    subroutine load_single_eosDT_table_by_id( &
-      which_eosdt, ep, ix, iz, ierr)
+      eos_prefix, ep, ix, iz, ierr)
       use utils_lib
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       type(EosDT_XZ_Info), pointer :: ep
       integer, intent(in) :: iz, ix
       integer, intent(out) :: ierr
@@ -521,9 +502,9 @@ contains
          iounit2 = alloc_iounit(ierr); if (ierr /= 0) return
 
          xz => custom_eos_XZ_struct
-         call Get_eosDT_Table_Filenames(which_eosdt, xz, &
+         call Get_eosDT_Table_Filenames(eos_prefix, xz, &
                                         ix, iz, fname, cache_filename, temp_cache_filename)
-         call Load1_eosDT_Table(which_eosdt, ep, xz, &
+         call Load1_eosDT_Table(eos_prefix, ep, xz, &
                                 ix, iz, fname, cache_filename, temp_cache_filename, &
                                 iounit1, iounit2, custom_use_cache_for_eos, ierr)
          if (ierr /= 0) then
@@ -535,9 +516,9 @@ contains
 
    end subroutine load_single_eosDT_table_by_id
 
-   subroutine Get_eosDT_Table_Filenames(which_eosdt, xz, &
+   subroutine Get_eosDT_Table_Filenames(eos_prefix, xz, &
                                         ix, iz, fname, cache_filename, temp_cache_filename)
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       type(DT_xz_Info), pointer :: xz
       integer, intent(in) :: ix, iz
       character(len=*), intent(out) :: fname, cache_filename, temp_cache_filename
@@ -552,20 +533,11 @@ contains
       call setstr(Z, Zstr)
       call setstr(X, Xstr)
 
-      if (which_eosdt == scvh_extended_pt_qeos_h2o) then
-         data_prefix = 'scvh_extended_pt_qeos_h2o-eosDT_'
-      else if (which_eosdt == scvh_extended_pt_qeos_mixture) then
-         data_prefix = 'scvh_extended_pt_qeos_mixture-eosDT_'
-      else if (which_eosdt == cms_pt_int_qeos_h2o) then
-         data_prefix = 'cms_pt_int_qeos_h2o-eosDT_'
-      else if (which_eosdt == cms_pt_int_qeos_mixture) then
-         data_prefix = 'cms_pt_int_qeos_mixture-eosDT_'
-      else if (which_eosdt == eosdt_extra_eos) then
-         data_prefix = 'eosdt_extra_tables'
-      else
-         write (*, *) 'Get_eosDT_Table_Filenames: unknown which_eosdt', which_eosdt
+      if (len_trim(eos_prefix) == 0) then
+         write (*, *) 'Get_eosDT_Table_Filenames: eos_character_ctrl(1) is not set.'
          call mesa_error(__FILE__, __LINE__)
       end if
+      data_prefix = trim(eos_prefix)//'-eosDT_'
 
       fname = trim(data_dir)// &
               trim(data_prefix)// &
@@ -596,10 +568,10 @@ contains
 
    end subroutine Get_eosDT_Table_Filenames
 
-   subroutine Load1_eosDT_Table(which_eosdt, ep, xz, &
+   subroutine Load1_eosDT_Table(eos_prefix, ep, xz, &
                                 ix, iz, filename, cache_filename, temp_cache_filename, &
                                 io_unit, cache_io_unit, use_cache, info)
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       type(EosDT_XZ_Info), pointer :: ep
       type(DT_xz_Info), pointer :: xz
       integer, intent(in) :: ix, iz
@@ -1228,10 +1200,10 @@ contains
    end subroutine Do_EoS_Interpolations
 
    subroutine Get1_eosdt_XTable_Results( &
-      which_eosdt, ix, iz, logRho_in, logT_in, &
+      eos_prefix, ix, iz, logRho_in, logT_in, &
       res, d_dlnd, d_dlnT, ierr)
 
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       integer, intent(in) :: ix, iz
       real(dp), intent(in) :: logRho_in, logT_in
       real(dp), intent(inout), dimension(nv) :: res, d_dlnd, d_dlnT
@@ -1259,7 +1231,7 @@ contains
       logQ = logRho - 2 * logT + 12
 
       ierr = 0
-      call load_single_eosDT_table_by_id(which_eosdt, ep, ix, iz, ierr)
+      call load_single_eosDT_table_by_id(eos_prefix, ep, ix, iz, ierr)
       if (ierr /= 0) return
 
       call Locate_logQ(ep, logQ, iQ, logQ0, logQ1, ierr)
@@ -1428,10 +1400,10 @@ contains
    end subroutine Get1_eosdt_XTable_Results
 
    subroutine Get1_eosdt_for_X( &
-      eos_rq, which_eosdt, xz, iz, X, logRho, logT, &
+      eos_rq, eos_prefix, xz, iz, X, logRho, logT, &
       res, dlnd, dlnT, d_dX, ierr)
       type(EoS_General_Info), pointer :: eos_rq
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       type(DT_xz_Info), pointer :: xz
       integer, intent(in) :: iz ! the index in eos_Zs
       real(dp), intent(in) :: X, logRho, logT
@@ -1460,7 +1432,7 @@ contains
 
       if (X < tiny .or. num_Xs == 1) then
          call Get1_eosdt_XTable_Results( &
-            which_eosdt, 1, iz, logRho, logT, &
+            eos_prefix, 1, iz, logRho, logT, &
             res, dlnd, dlnT, ierr)
          d_dX = 0
          return
@@ -1469,7 +1441,7 @@ contains
       if (X >= xz% Xs_for_Z(num_Xs, iz)) then
 
          call Get1_eosdt_XTable_Results( &
-            which_eosdt, num_Xs, iz, logRho, logT, &
+            eos_prefix, num_Xs, iz, logRho, logT, &
             res, dlnd, dlnT, ierr)
          d_dX = 0
 
@@ -1532,7 +1504,7 @@ contains
       do ix = ix_lo, ix_hi
          j = ix - ix_lo + 1
          call Get1_eosdt_XTable_Results( &
-            which_eosdt, ix, iz, logRho, logT, &
+            eos_prefix, ix, iz, logRho, logT, &
             res_zx(:, j), dlnd_zx(:, j), dlnT_zx(:, j), &
             ierr)
          if (ierr /= 0) return
@@ -1637,7 +1609,7 @@ contains
 
          j = 1
          call Get1_eosdt_XTable_Results( &
-            which_eosdt, ix - 1, iz, logRho, logT, &
+            eos_prefix, ix - 1, iz, logRho, logT, &
             res_zx(:, j), dlnd_zx(:, j), dlnT_zx(:, j), &
             ierr)
          if (ierr /= 0) then
@@ -1647,7 +1619,7 @@ contains
 
          j = 2
          call Get1_eosdt_XTable_Results( &
-            which_eosdt, ix, iz, logRho, logT, &
+            eos_prefix, ix, iz, logRho, logT, &
             res_zx(:, j), dlnd_zx(:, j), dlnT_zx(:, j), &
             ierr)
          if (ierr /= 0) then
@@ -1691,11 +1663,11 @@ contains
    end subroutine Get1_eosdt_for_X
 
    subroutine Get1_eosdt_Results( & ! blend in Z
-      eos_rq, which_eosdt, xz, Z, X, logRho, logT, &
+      eos_rq, eos_prefix, xz, Z, X, logRho, logT, &
       res, dlnd, dlnT, dX, dZ, ierr)
       use chem_def
       type(EoS_General_Info), pointer :: eos_rq
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       type(DT_xz_Info), pointer :: xz
       real(dp), intent(in) :: Z, X, logRho, logT
       real(dp), intent(inout), dimension(nv) :: res, dlnd, dlnT, dX, dZ
@@ -1736,7 +1708,7 @@ contains
 
       if (Z <= max(1d-20, xz% Zs(1))) then
          call Get1_eosdt_for_X( &
-            eos_rq, which_eosdt, xz, 1, X, &
+            eos_rq, eos_prefix, xz, 1, X, &
             logRho, logT, &
             res, dlnd, dlnT, dX, ierr)
          dZ = 0
@@ -1755,7 +1727,7 @@ contains
 
       if (Z >= xz% Zs(xz% nZs)) then
          call Get1_eosdt_for_X( &
-            eos_rq, which_eosdt, xz, xz% nZs, X, &
+            eos_rq, eos_prefix, xz, xz% nZs, X, &
             logRho, logT, &
             res, dlnd, dlnT, dX, ierr)
          dZ = 0
@@ -1763,7 +1735,7 @@ contains
       end if
 
       ! method 1: linear interpolation in Z
-      if (eos_rq% eos_integer_ctrl(2) == 1) then
+      if (eos_rq% eos_integer_ctrl(1) == 1) then
 
          do iz = 2, xz% nZs
             if (Z < xz% Zs(iz)) then
@@ -1793,7 +1765,7 @@ contains
 
          ! cubic interpolation
          ! essentially the way MESA is doing it for X.
-      else if (eos_rq% eos_integer_ctrl(2) == 2) then
+      else if (eos_rq% eos_integer_ctrl(1) == 2) then
 
          iz_lo = -1
          iz_hi = -1
@@ -1836,7 +1808,7 @@ contains
          do iz = iz_lo, iz_hi
             j = iz - iz_lo + 1
             call Get1_eosdt_for_X( &
-               eos_rq, which_eosdt, xz, iz, X, &
+               eos_rq, eos_prefix, xz, iz, X, &
                logRho, logT, &
                res_zx_alt(:, j), dlnd_zx_alt(:, j), dlnT_zx_alt(:, j), dX_zx_alt(:, j), &
                ierr)
@@ -1932,7 +1904,7 @@ contains
          end if
 
       else
-         write (*, *) 'error: Get1_eosdt_Results assumes eos_integer_ctrl(2) == 1 or 2.'
+         write (*, *) 'error: Get1_eosdt_Results assumes eos_integer_ctrl(1) == 1 or 2.'
          call mesa_error(__FILE__, __LINE__)
       end if
 
@@ -1951,12 +1923,12 @@ contains
          dcdZ(2) = 1d0 / (Z2 - Z1)
          dcdZ(1) = -dcdZ(2)
          call Get1_eosdt_for_X( &
-            eos_rq, which_eosdt, xz, iz1, X, logRho, logT, &
+            eos_rq, eos_prefix, xz, iz1, X, logRho, logT, &
             res_zx(:, 1), dlnd_zx(:, 1), dlnT_zx(:, 1), dX_zx(:, 1), &
             ierr)
          if (ierr /= 0) return
          call Get1_eosdt_for_X( &
-            eos_rq, which_eosdt, xz, iz2, X, logRho, logT, &
+            eos_rq, eos_prefix, xz, iz2, X, logRho, logT, &
             res_zx(:, 2), dlnd_zx(:, 2), dlnT_zx(:, 2), dX_zx(:, 2), &
             ierr)
          if (ierr /= 0) return
@@ -1965,14 +1937,14 @@ contains
    end subroutine Get1_eosdt_Results
 
    subroutine get1_for_eosdt( &
-      handle, which_eosdt, Z, X, abar, zbar, &
+      handle, eos_prefix, Z, X, abar, zbar, &
       species, chem_id, net_iso, xa, &
       logRho, logT, remaining_fraction, &
       res, d_dlnd, d_dlnT, d_dxa, &
       ierr)
       use chem_def, only: chem_isos
       integer, intent(in) :: handle
-      integer, intent(in) :: which_eosdt
+      character(len=*), intent(in) :: eos_prefix
       real(dp), intent(in) :: &
          Z, X, abar, zbar, remaining_fraction
       integer, intent(in) :: species
@@ -1992,7 +1964,7 @@ contains
       xz => custom_eos_XZ_struct
 
       call Get1_eosdt_Results( &
-         eos_rq, which_eosdt, xz, Z, X, logRho, logT, &
+         eos_rq, eos_prefix, xz, Z, X, logRho, logT, &
          res, d_dlnd, d_dlnT, d_dX, d_dZ, ierr)
 
       do i = 1, species

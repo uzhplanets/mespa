@@ -39,41 +39,47 @@ You also have to set the following options in the inlist of your project:
     ! ::
     use_other_eos_results = .true.
 
-    ! eos_integer_ctrl(1)
+    ! eos_character_ctrl(1)
     ! ~~~~~~~~~~~~~~
 
-    ! Which equation of state to use. Options are (depending on the availability of tables):
-    !   1: A low-temperature extension of SCvH for hydrogen and helium and the QEOS
-    !   heavy-element equation of state for water.
-    !   2: A low-temperature extension of SCvH for hydrogen and helium and the QEOS
-    !   heavy-element equation of state for a mixture 50-50 mixture of water and rocks.
-    !   3: The Chabrier & Debras (2021) hydrogen-helium equation of state and the QEOS 
-        heavy-element equation of state for water.
-    !   4: The Chabrier & Debras (2021) hydrogen-helium equation of state and the QEOS 
-        heavy-element equation of state for a 50-50 mixture of water and rocks.
-    !   5: A user-generated table with prefix “eosdt_extra_tables”.
-    ! At the moment only option 4 is available, but other tables will be available soon.
+    ! Prefix of the equation of state tables to use. The tables are read from
+    ! $MESPA_DIR/eos_tables/<prefix>-eosDT_<Z>z<X>x.data. Options are (depending on the
+    ! availability of tables):
+    !   'scvh_extended_pt_qeos_h2o': A low-temperature extension of SCvH for hydrogen
+    !   and helium and the QEOS heavy-element equation of state for water.
+    !   'scvh_extended_pt_qeos_mixture': A low-temperature extension of SCvH for hydrogen
+    !   and helium and the QEOS heavy-element equation of state for a 50-50 mixture of
+    !   water and rocks.
+    !   'cms_pt_int_qeos_h2o': The Chabrier & Debras (2021) hydrogen-helium equation of
+    !   state and the QEOS heavy-element equation of state for water.
+    !   'cms_pt_int_qeos_mixture': The Chabrier & Debras (2021) hydrogen-helium equation
+    !   of state and the QEOS heavy-element equation of state for a 50-50 mixture of
+    !   water and rocks.
+    ! User-generated tables can be used by placing them in $MESPA_DIR/eos_tables with
+    ! the same naming scheme and setting their prefix here.
+    ! At the moment only 'cms_pt_int_qeos_mixture' is available, but other tables will
+    ! be available soon.
 
     ! ::
-    eos_integer_ctrl(1) = 4
+    eos_character_ctrl(1) = 'cms_pt_int_qeos_mixture'
 
-    ! eos_integer_ctrl(2)
+    ! eos_integer_ctrl(1)
     ! ~~~~~~~~~~~~~~
 
     ! Which interpolation method to use to interpolate between the heavy-element tables.
     ! Options are 1 for linear, and 2 for cubic.
 
     ! ::
-    eos_integer_ctrl(2) = 2
+    eos_integer_ctrl(1) = 2
     
-    ! eos_integer_ctrl(3)
+    ! eos_integer_ctrl(2)
     ! ~~~~~~~~~~~~~~
 
     ! In-table interpolation method. Options are 1 for the MESA default (bi-cubic), 2 for
     ! bi-linear if the specific heats (Cp or Cv) are negative, and 3 for always bi-linear.
 
     ! ::
-    eos_integer_ctrl(3) = 1
+    eos_integer_ctrl(2) = 1
 ```
 
 ### Custom opacity module (`custom_kap`)
