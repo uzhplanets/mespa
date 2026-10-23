@@ -7,18 +7,17 @@
    use_other_eos_component = .true.
    use_other_eos_results = .true.
 
-   ! which eos to use:
-   eos_integer_ctrl(1) = 4
+   ! which eos to use (prefix of the tables in $MESPA_DIR/eos_tables):
+   eos_character_ctrl(1) = 'cms_pt_int_qeos_mixture'
    ! Options (if available on your system):
-   ! 1: scvh_extended_qeos_h2o 
-   ! 2: scvh_extended_qeos_mixture 
-   ! 3: cms_pt_int_qeos_h2o
-   ! 4: cms_pt_int_qeos_mixture
-   ! 5: extra_eos
+   ! 'scvh_extended_pt_qeos_h2o'
+   ! 'scvh_extended_pt_qeos_mixture'
+   ! 'cms_pt_int_qeos_h2o'
+   ! 'cms_pt_int_qeos_mixture'
 
    ! Interpolation options
-   eos_integer_ctrl(2) = 2
-   eos_integer_ctrl(3) = 2
+   eos_integer_ctrl(1) = 2 ! between-table interpolation method
+   eos_integer_ctrl(2) = 2 ! in-table interpolation method
    eosDT_use_linear_interp_for_X = .true.
 / ! end of eos namelist
 

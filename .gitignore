@@ -36,6 +36,12 @@
 *.exe
 *.out
 *.app
+/planet
+/star
 
 # debug information files
 *.dwo
+
+# test suite inlist files
+test_suite/custom_eos_test/inlist
+test_suite/custom_kap_test/inlist

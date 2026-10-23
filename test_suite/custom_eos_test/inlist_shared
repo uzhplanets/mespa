@@ -6,9 +6,9 @@
 &eos
    use_other_eos_component = .true.
    use_other_eos_results = .true.
-   eos_integer_ctrl(1) = 4 ! which tables to use
-   eos_integer_ctrl(2) = 2 ! between-table interpolation method
-   eos_integer_ctrl(3) = 2 ! in-table interpolation method
+   eos_character_ctrl(1) = 'cms_pt_int_qeos_mixture' ! which tables to use
+   eos_integer_ctrl(1) = 2 ! between-table interpolation method
+   eos_integer_ctrl(2) = 2 ! in-table interpolation method
 / ! end of eos namelist
 
 
