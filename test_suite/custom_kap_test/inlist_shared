@@ -9,11 +9,6 @@
 
    ! which eos to use (prefix of the tables in $MESPA_DIR/eos_tables):
    eos_character_ctrl(1) = 'cms_pt_int_qeos_mixture'
-   ! Options (if available on your system):
-   ! 'scvh_extended_pt_qeos_h2o'
-   ! 'scvh_extended_pt_qeos_mixture'
-   ! 'cms_pt_int_qeos_h2o'
-   ! 'cms_pt_int_qeos_mixture'
 
    ! Interpolation options
    eos_integer_ctrl(1) = 2 ! between-table interpolation method
