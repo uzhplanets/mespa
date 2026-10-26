@@ -45,20 +45,24 @@ You also have to set the following options in the inlist of your project:
     ! Prefix of the equation of state tables to use. The tables are read from
     ! $MESPA_DIR/eos_tables/<prefix>-eosDT_<Z>z<X>x.data. Options are (depending on the
     ! availability of tables):
-    !   'scvh_extended_pt_qeos_h2o': A low-temperature extension of SCvH for hydrogen
-    !   and helium and the QEOS heavy-element equation of state for water.
-    !   'scvh_extended_pt_qeos_mixture': A low-temperature extension of SCvH for hydrogen
-    !   and helium and the QEOS heavy-element equation of state for a 50-50 mixture of
-    !   water and rocks.
     !   'cms_pt_int_qeos_h2o': The Chabrier & Debras (2021) hydrogen-helium equation of
     !   state and the QEOS heavy-element equation of state for water.
+    !   'cms_pt_int_qeos_sio2': The Chabrier & Debras (2021) hydrogen-helium equation of
+    !   state and the QEOS heavy-element equation of state for SiO2.
+    !   'cms_pt_int_qeos_earth': The Chabrier & Debras (2021) hydrogen-helium equation of
+    !   state and the QEOS heavy-element equation of state for an Earth-like mixture
+    !   (32.5% iron and 67.5% silicates).
     !   'cms_pt_int_qeos_mixture': The Chabrier & Debras (2021) hydrogen-helium equation
     !   of state and the QEOS heavy-element equation of state for a 50-50 mixture of
     !   water and rocks.
+    !   'mesa_planetblend': The blended tables of Sandford & Miguel (2026) for mixtures
+    !   of hydrogen, helium and a 50-50 mixture of water and rocks. These tables are
+    !   thermodynamically consistent by construction.
     ! User-generated tables can be used by placing them in $MESPA_DIR/eos_tables with
     ! the same naming scheme and setting their prefix here.
-    ! At the moment only 'cms_pt_int_qeos_mixture' is available, but other tables will
-    ! be available soon.
+    ! Tables with the prefixes 'scvh_extended_pt_qeos_h2o' and
+    ! 'scvh_extended_pt_qeos_mixture' (a low-temperature extension of SCvH combined with
+    ! the QEOS heavy-element equations of state) are not yet included.
 
     ! ::
     eos_character_ctrl(1) = 'cms_pt_int_qeos_mixture'
